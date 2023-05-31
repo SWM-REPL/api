@@ -7,6 +7,7 @@
 
 ## Tech Stack
 
+- Java
 - Spring
 - MySQL
 
