@@ -8,7 +8,7 @@
 ## Tech Stack
 
 - Java 17
-- Spring
+- Spring 3.1.0
 - MySQL
 
 ## 최종 수정일자
