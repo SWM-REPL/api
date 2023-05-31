@@ -27,6 +27,8 @@ jobs:
       - name: Build with Gradle
         run: |
           pwd
+          chmod 777 ./gradlew
           ./gradlew clean build
           cd ./build/libs
-          nohup java -jar replnote-0.0.1-SNAPSHOT.jar &
+          chmod 777 ./replnote-0.0.1-SNAPSHOT.jar
+          nohup java -jar ./replnote-0.0.1-SNAPSHOT.jar &
