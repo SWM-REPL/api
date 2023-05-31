@@ -9,10 +9,22 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
+      - name: deploy
+        uses: appleboy/ssh-action@v0.1.5
+        with:
+          host: ${{ secrets.SERVER_HOST }}
+          port: ${{ secrets.SERVER_SSH_PORT }}
+          username: ${{ secrets.SERVER_USERNAME }}
+          password: ${{ secrets.SERVER_PASSWORD }}
+          script: |
+            git pull origin main
+  build-and-run:
+    needs: deploy
+    runs-on: ubuntu-latest
+    steps:
       - uses: actions/checkout@v3
       - name: Build with Gradle
         run: |
-          cd ./api
           ./gradlew clean build
           cd ./build/libs
           nohup java -jar replnote-0.0.1-SNAPSHOT.jar &
