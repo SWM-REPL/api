@@ -7,7 +7,7 @@
 
 ## Tech Stack
 
-- Java
+- Java 17
 - Spring
 - MySQL
 
