@@ -8,6 +8,7 @@
 ## Tech Stack
 
 - Spring
+- MySQL
 
 ## 최종 수정일자
 
