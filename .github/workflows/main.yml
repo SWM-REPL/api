@@ -18,6 +18,7 @@ jobs:
           password: ${{ secrets.SERVER_PASSWORD }}
           script: |
             whoami
+            ls -al
             cd api
             git pull origin main
             mkdir ./src/main/resources
@@ -37,6 +38,7 @@ jobs:
       - name: Build with Gradle
         run: |
           pwd
+          ls -al
           chmod 777 ./gradlew
           ./gradlew clean build
           cd ./build/libs
