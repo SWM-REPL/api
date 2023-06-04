@@ -41,6 +41,9 @@ jobs:
           ls -al
           chmod 777 ./gradlew
           ./gradlew clean build
-          cd ./build/libs
+          cd ./build
+          echo "${{ secrets.PROPERTIES }}" > ./resources/application.properties
+          cd ./libs
           chmod 777 ./replnote-0.0.1-SNAPSHOT.jar
           nohup java -jar ./replnote-0.0.1-SNAPSHOT.jar &
+          
