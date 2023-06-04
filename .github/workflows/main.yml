@@ -16,9 +16,10 @@ jobs:
           port: ${{ secrets.SERVER_SSH_PORT }}
           username: ${{ secrets.SERVER_USERNAME }}
           password: ${{ secrets.SERVER_PASSWORD }}
-          run: |
-            pwd
-            git pull origin main
+          script: |
+            whoami
+            git pull origin master
+            
   build-and-run:
     needs: deploy
     runs-on: ubuntu-latest
