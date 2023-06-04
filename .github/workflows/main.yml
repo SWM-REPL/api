@@ -61,5 +61,7 @@ jobs:
                      echo "> kill -9 $CURRENT_PID"
                      kill -9 $CURRENT_PID
                      sleep 1
+            fi
+            echo "> new app deploy"
             nohup java -jar ./replnote-0.0.1-SNAPSHOT.jar &
             exit
