@@ -3,13 +3,13 @@
 ## Member
 
 - 이진우
-- 정인희
+- 정인희1
 
 ## Tech Stack
 
 - Java(JDK) 17
-- Spring 3.1.0
-- MySQL
+- Spring (3.1.0)
+- MySQL (8.0.2)
 - GitHub Actions(CI/CD)
 
 ## 최종 수정일자
