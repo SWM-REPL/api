@@ -9,7 +9,7 @@
 
 - Java(JDK) 17
 - Spring 3.1.0
-- MySQL
+- MySQL 8.0.2
 - GitHub Actions(CI/CD)
 
 ## 최종 수정일자
