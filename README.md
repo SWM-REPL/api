@@ -10,6 +10,7 @@
 - Java 17
 - Spring 3.1.0
 - MySQL
+- GitHub Actions(CI/CD)
 
 ## 최종 수정일자
 
@@ -22,3 +23,5 @@
   - 변경이력 추가
 - v0.0.2
   - 최종 수정일자 추가
+  - Tech Stack 추가
+  - Tech Stack 수정
