@@ -22,8 +22,9 @@ jobs:
             git pull origin main
       - name: make application.properties
         run: |
-          mkdir api/src/main/resources
-          touch api/src/main/resources/application.properties
+          mkdir ./src/main/resources
+          cd ./src/main/resources
+          touch ./application.properties
           echo "${{ secrets.PROPERTIES }}" > ./application.properties
         shell: bash
           
