@@ -8,7 +8,7 @@
 ## Tech Stack
 
 - Java(JDK) 17
-- Spring 3.1.0
+- Spring (3.1.0)
 - MySQL (8.0.2)
 - GitHub Actions(CI/CD)
 
