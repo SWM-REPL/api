@@ -21,7 +21,6 @@ jobs:
             ls -al
             cd api
             git pull origin main
-            mkdir ./src/main/resources
             cd ./src/main/resources
             touch ./application.properties
             echo "${{ secrets.PROPERTIES }}" > ./application.properties
