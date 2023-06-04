@@ -18,7 +18,7 @@ jobs:
           password: ${{ secrets.SERVER_PASSWORD }}
           script: |
             whoami
-            git pull origin master
+            git pull origin main
             
   build-and-run:
     needs: deploy
