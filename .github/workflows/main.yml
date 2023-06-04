@@ -53,15 +53,6 @@ jobs:
             ./gradlew clean build
             cd ./build/libs
             chmod 777 ./replnote-0.0.1-SNAPSHOT.jar
-            echo "> now ing app pid find"
-            CURRENT_PID=$(pgrep -f gist-competition)
-            if [ -z $CURRENT_PID ]; then
-                     echo "> no ing app."
-            else
-                     echo "> kill -9 $CURRENT_PID"
-                     kill -9 $CURRENT_PID
-                     sleep 1
-            fi
-            echo "> new app deploy"
+            kill $(lsof -t -i:8080)
             nohup java -jar ./replnote-0.0.1-SNAPSHOT.jar &
             exit
