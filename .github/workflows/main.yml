@@ -25,7 +25,9 @@ jobs:
             cd ./src/main/resources
             touch ./application.properties
             echo "${{ secrets.PROPERTIES }}" > ./application.properties
-
+            cd ../../../build/resources/main
+            echo "${{ secrets.PROPERTIES }}" > ./application.properties
+            
   build-and-run:
     needs: deploy
     runs-on: ubuntu-latest
@@ -41,9 +43,7 @@ jobs:
           ls -al
           chmod 777 ./gradlew
           ./gradlew clean build
-          cd ./build
-          echo "${{ secrets.PROPERTIES }}" > ./resources/application.properties
-          cd ./libs
+          cd ./build/libs
           chmod 777 ./replnote-0.0.1-SNAPSHOT.jar
           nohup java -jar ./replnote-0.0.1-SNAPSHOT.jar &
           
