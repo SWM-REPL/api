@@ -3,7 +3,7 @@
 ## Member
 
 - 이진우
-- 정인희
+- 정인희1
 
 ## Tech Stack
 
