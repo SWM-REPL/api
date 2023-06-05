@@ -36,6 +36,6 @@ public class Room {
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
 
-    @OneToMany(mappedBy = "room")
+    @OneToMany
     private List<User> users = new ArrayList<User>() ;
 }

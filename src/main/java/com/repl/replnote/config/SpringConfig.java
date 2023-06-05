@@ -1,4 +1,4 @@
-package com.repl.replnote;
+package com.repl.replnote.config;
 
 import com.repl.replnote.user.repository.SpringDataJpaUserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +15,7 @@ public class SpringConfig {
     public SpringConfig(SpringDataJpaUserRepository userRepository) {
         this.userRepository = userRepository;
     }
+
 
     // setter 주입
 //    @Bean

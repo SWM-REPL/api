@@ -1,6 +1,7 @@
 package com.repl.replnote.user.controller;
 
 import com.repl.replnote.user.dao.LoginDAO;
+import com.repl.replnote.user.dto.LoginDTO;
 import com.repl.replnote.user.entity.User;
 import com.repl.replnote.user.service.AuthService;
 import com.repl.replnote.util.Message;
@@ -33,7 +34,7 @@ public class AuthController {
         headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
 
         if (authService.login(loginDAO)) {
-            Message message = new Message(StatusEnum.OK, "로그인 성공!", loginDAO.getUserId());
+            Message message = new Message(StatusEnum.OK, "로그인 성공!", new LoginDTO(loginDAO.getUserId()));
             return new ResponseEntity<>(message, headers, HttpStatus.OK);
         } else {
             Message message = new Message(StatusEnum.FORBIDDEN, "존재하지 않는 회원입니다!", null);
