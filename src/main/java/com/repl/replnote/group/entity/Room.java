@@ -1,10 +1,8 @@
-package com.repl.replnote.user.entity;
+package com.repl.replnote.group.entity;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.repl.replnote.group.entity.Room;
+import com.repl.replnote.user.entity.User;
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
+import jakarta.validation.constraints.NotNull;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -14,17 +12,21 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
+@Table(name = "room")
 @EntityListeners(AuditingEntityListener.class)
-public class User {
+public class Room {
     @Id
-    @Column(name = "user_id", length = 20)
-    private String userId;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "room_id")
+    private Long groupId;
 
     @Column(length = 20)
-    private String password;
-
-    @Column(length = 20)
+    @NotNull
     private String name;
+
+    @ManyToOne
+    @JoinColumn(name = "owner")
+    private User owner;
 
     @CreatedDate
     @Column(name = "created_at")
@@ -35,18 +37,5 @@ public class User {
     private LocalDateTime updatedAt;
 
     @OneToMany
-    private List<Room> rooms = new ArrayList<Room>();
-
-
-    public String getUserId() {
-        return userId;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public String getName() {
-        return name;
-    }
+    private List<User> users = new ArrayList<User>() ;
 }
