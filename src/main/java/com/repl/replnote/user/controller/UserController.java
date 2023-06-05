@@ -2,16 +2,19 @@ package com.repl.replnote.user.controller;
 
 import com.repl.replnote.user.entity.User;
 import com.repl.replnote.user.service.UserService;
+import com.repl.replnote.util.Message;
+import com.repl.replnote.util.StatusEnum;
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.media.Content;
-import io.swagger.v3.oas.annotations.media.Schema;
-import io.swagger.v3.oas.annotations.responses.ApiResponse;
-import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
-import org.springframework.stereotype.Controller;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.nio.charset.Charset;
+import java.util.Optional;
 
 @RestController
 @Tag(name = "User", description = "User 관련 api 입니다.")
@@ -23,12 +26,18 @@ public class UserController {
         this.userService = userService;
     }
 
-    @PostMapping(value = "/user")
-    @ResponseStatus(value = HttpStatus.CREATED)
-    @ResponseBody
+    @PostMapping(value = "/user", produces = "application/json;charset=UTF-8")
     @Operation(summary = "회원가입 메서드", description = "회원가입 메서드입니다.")
-    public String create(@RequestBody User user) {
-        userService.create(user);
-        return user.getUserId();
+    public ResponseEntity<Message> create(@RequestBody User user) {
+        String savedUserId = userService.create(user);
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
+        if (savedUserId == null) {
+            Message message = new Message(StatusEnum.CONFLICT, "중복 회원 존재!", null);
+            return new ResponseEntity<>(message, headers, HttpStatus.CONFLICT);
+        } else {
+            Message message = new Message(StatusEnum.CREATED, "회원가입 성공!", user);
+            return new ResponseEntity<>(message, headers, HttpStatus.CREATED);
+        }
     }
 }
