@@ -21,12 +21,12 @@ public class AuthService {
     public Boolean login(LoginDAO loginDAO) {
         Optional<User> findUser = userRepository.findById(loginDAO.getUserId());
         if (!findUser.isPresent()) {
-            throw new IllegalStateException("존재하지 않는 회원입니다!");
+            return false;
         } else {
             if (findUser.get().getPassword().equals(loginDAO.getPassword())) {
                 return true;
             } else {
-                throw new IllegalStateException("존재하지 않는 회원입니다!");
+                return false;
             }
         }
     }

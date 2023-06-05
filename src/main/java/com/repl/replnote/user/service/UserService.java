@@ -18,9 +18,12 @@ public class UserService {
     }
 
     public String create(User user) {
-        validateDuplicateUser(user);
-        userRepository.save(user);
-        return user.getUserId();
+        if (validateDuplicateUser(user)) {
+            userRepository.save(user);
+            return user.getUserId();
+        } else {
+            return null;
+        }
     }
 
 //    public Optional<User> read() {
@@ -35,9 +38,11 @@ public class UserService {
 //
 //    }
 
-    public void validateDuplicateUser(User user) {
-        userRepository.findById(user.getUserId()).ifPresent(u -> {
-            throw new IllegalStateException("이미 존재하는 회원입니다!");
-        });
+    public boolean validateDuplicateUser(User user) {
+        if (userRepository.findById(user.getUserId()).isPresent()) {
+            return false;
+        } else {
+            return true;
+        }
     }
 }

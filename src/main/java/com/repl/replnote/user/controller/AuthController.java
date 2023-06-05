@@ -29,10 +29,15 @@ public class AuthController {
     @PostMapping(value = "/auth")
     @Operation(summary = "로그인 메서드", description = "로그인 메서드입니다.")
     public ResponseEntity<Message> login(@RequestBody LoginDAO loginDAO) {
-        authService.login(loginDAO);
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
-        Message message = new Message(StatusEnum.OK, "로그인 성공!", loginDAO.getUserId());
-        return new ResponseEntity<>(message, headers, HttpStatus.OK);
+
+        if (authService.login(loginDAO)) {
+            Message message = new Message(StatusEnum.OK, "로그인 성공!", loginDAO.getUserId());
+            return new ResponseEntity<>(message, headers, HttpStatus.OK);
+        } else {
+            Message message = new Message(StatusEnum.FORBIDDEN, "존재하지 않는 회원입니다!", null);
+            return new ResponseEntity<>(message, headers, HttpStatus.FORBIDDEN);
+        }
     }
 }

@@ -14,6 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.nio.charset.Charset;
+import java.util.Optional;
 
 @RestController
 @Tag(name = "User", description = "User 관련 api 입니다.")
@@ -28,10 +29,15 @@ public class UserController {
     @PostMapping(value = "/user", produces = "application/json;charset=UTF-8")
     @Operation(summary = "회원가입 메서드", description = "회원가입 메서드입니다.")
     public ResponseEntity<Message> create(@RequestBody User user) {
-        userService.create(user);
+        String savedUserId = userService.create(user);
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
-        Message message = new Message(StatusEnum.CREATED, "회원가입 성공!", user);
-        return new ResponseEntity<>(message, headers, HttpStatus.CREATED);
+        if (savedUserId == null) {
+            Message message = new Message(StatusEnum.CONFLICT, "중복 회원 존재!", null);
+            return new ResponseEntity<>(message, headers, HttpStatus.CONFLICT);
+        } else {
+            Message message = new Message(StatusEnum.CREATED, "회원가입 성공!", user);
+            return new ResponseEntity<>(message, headers, HttpStatus.CREATED);
+        }
     }
 }
