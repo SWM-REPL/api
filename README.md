@@ -3,7 +3,7 @@
 ## Member
 
 - 이진우
-- 정인희(11)
+- 정인희
 
 ## Tech Stack
 
@@ -25,3 +25,5 @@
   - 최종 수정일자 추가
   - Tech Stack 추가
   - Tech Stack 수정
+- v0.0.3
+  - Jira Commit 테스트
