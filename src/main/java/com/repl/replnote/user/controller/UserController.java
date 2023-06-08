@@ -5,13 +5,13 @@ import com.repl.replnote.user.entity.User;
 import com.repl.replnote.user.service.UserService;
 import com.repl.replnote.util.Message;
 import com.repl.replnote.util.StatusEnum;
+import com.repl.replnote.util.interceptor.InterceptorException;
+import com.repl.replnote.util.interceptor.InterceptorExceptionEnum;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
 
 import java.nio.charset.Charset;
@@ -37,14 +37,18 @@ public class UserController {
             Message message = new Message(StatusEnum.CONFLICT, "중복 회원 존재!", null);
             return new ResponseEntity<>(message, headers, HttpStatus.CONFLICT);
         } else {
-            Message message = new Message(StatusEnum.CREATED, "회원가입 성공!", user);
+            Message message = new Message(StatusEnum.CREATED, "회원가입 성공!", new UserReadDTO(savedUserId, user.getName()));
             return new ResponseEntity<>(message, headers, HttpStatus.CREATED);
         }
     }
 
     @GetMapping(value = "/user")
     @Operation(summary = "회원 정보 조회 메서드", description = "회원 정보 조회 메서드입니다.")
-    public ResponseEntity<Message> read(@RequestParam String userId) {
+    public ResponseEntity<Message> read(HttpServletRequest request, @RequestParam String userId) {
+        if (request.getSession().getAttribute("userId") == null) {
+            throw new InterceptorException(InterceptorExceptionEnum.UNAUTHORIZED);
+        }
+
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
         UserReadDTO user = userService.read(userId);

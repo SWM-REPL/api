@@ -24,6 +24,9 @@ public class Room {
     @NotNull
     private String name;
 
+    @Column(length = 100)
+    private String introduction;
+
     @ManyToOne
     @JoinColumn(name = "owner")
     private User owner;
