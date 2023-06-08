@@ -1,32 +1,26 @@
-package com.repl.replnote.group.entity;
+package com.repl.replnote.room.entity;
 
 import com.repl.replnote.user.entity.User;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotNull;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
 
 @Entity
-@Table(name = "room")
+@Table(name = "room_user")
 @EntityListeners(AuditingEntityListener.class)
-public class Room {
+public class RoomUser {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "room_id")
-    private Long groupId;
-
-    @Column(length = 20)
-    @NotNull
-    private String name;
-
     @ManyToOne
-    @JoinColumn(name = "owner")
-    private User owner;
+    @JoinColumn(name = "room_id")
+    private Room room;
+
+    @Id
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
 
     @CreatedDate
     @Column(name = "created_at")
@@ -35,7 +29,4 @@ public class Room {
     @LastModifiedDate
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
-
-    @OneToMany
-    private List<User> users = new ArrayList<User>() ;
 }
