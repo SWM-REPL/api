@@ -1,5 +1,6 @@
 package com.repl.replnote.user.controller;
 
+import com.repl.replnote.user.dto.UserReadDTO;
 import com.repl.replnote.user.entity.User;
 import com.repl.replnote.user.service.UserService;
 import com.repl.replnote.util.Message;
@@ -38,6 +39,21 @@ public class UserController {
         } else {
             Message message = new Message(StatusEnum.CREATED, "회원가입 성공!", user);
             return new ResponseEntity<>(message, headers, HttpStatus.CREATED);
+        }
+    }
+
+    @GetMapping(value = "/user")
+    @Operation(summary = "회원 정보 조회 메서드", description = "회원 정보 조회 메서드입니다.")
+    public ResponseEntity<Message> read(@RequestParam String userId) {
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
+        UserReadDTO user = userService.read(userId);
+        if (user == null) {
+            Message message = new Message(StatusEnum.NOT_FOUND, "존재하지 않는 아이디!", null);
+            return new ResponseEntity<>(message, headers, HttpStatus.NOT_FOUND);
+        } else {
+            Message message = new Message(StatusEnum.OK, "유저 조회 성공!", user);
+            return new ResponseEntity<>(message, headers, HttpStatus.OK);
         }
     }
 }

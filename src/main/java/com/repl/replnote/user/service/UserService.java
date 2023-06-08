@@ -1,5 +1,6 @@
 package com.repl.replnote.user.service;
 
+import com.repl.replnote.user.dto.UserReadDTO;
 import com.repl.replnote.user.entity.User;
 import com.repl.replnote.user.repository.SpringDataJpaUserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,8 +27,13 @@ public class UserService {
         }
     }
 
-    public Optional<User> read(String userId) {
-        return userRepository.findById(userId);
+    public UserReadDTO read(String userId) {
+        Optional<User> user = userRepository.findById(userId);
+        if (!user.isPresent()) {
+            return null;
+        } else {
+            return new UserReadDTO(user.get().getUserId(), user.get().getName());
+        }
     }
 //
 //    public int count() {
