@@ -1,4 +1,4 @@
-package com.repl.replnote;
+package com.repl.replnote.config;
 
 import com.repl.replnote.room.repository.SpringDataJpaRoomRepository;
 import com.repl.replnote.user.repository.SpringDataJpaUserRepository;

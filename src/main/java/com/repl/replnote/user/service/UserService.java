@@ -26,9 +26,9 @@ public class UserService {
         }
     }
 
-//    public Optional<User> read() {
-//
-//    }
+    public Optional<User> read(String userId) {
+        return userRepository.findById(userId);
+    }
 //
 //    public int count() {
 //
