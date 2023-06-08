@@ -1,6 +1,6 @@
 package com.repl.replnote.todo.entity;
 
-import com.repl.replnote.group.entity.Room;
+import com.repl.replnote.room.entity.Room;
 import jakarta.persistence.*;
 import org.hibernate.annotations.ColumnDefault;
 import org.springframework.data.annotation.CreatedDate;
