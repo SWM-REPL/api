@@ -1,4 +1,4 @@
-package com.repl.replnote.group.entity;
+package com.repl.replnote.room.entity;
 
 import com.repl.replnote.user.entity.User;
 import jakarta.persistence.*;

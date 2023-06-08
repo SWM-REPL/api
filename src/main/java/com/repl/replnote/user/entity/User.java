@@ -1,10 +1,7 @@
 package com.repl.replnote.user.entity;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.repl.replnote.group.entity.Room;
+import com.repl.replnote.room.entity.Room;
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -34,7 +31,7 @@ public class User {
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany
     private List<Room> rooms = new ArrayList<Room>();
 
 

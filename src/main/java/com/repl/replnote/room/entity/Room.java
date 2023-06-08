@@ -1,4 +1,4 @@
-package com.repl.replnote.group.entity;
+package com.repl.replnote.room.entity;
 
 import com.repl.replnote.user.entity.User;
 import jakarta.persistence.*;
@@ -36,6 +36,18 @@ public class Room {
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
 
-    @OneToMany(mappedBy = "room")
+    @OneToMany
     private List<User> users = new ArrayList<User>() ;
+
+
+    public Long getGroupId() {
+        return groupId;
+    }
+    public String getName() {
+        return name;
+    }
+    public User getOwner() {
+        return owner;
+    }
+
 }
