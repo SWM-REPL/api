@@ -18,7 +18,7 @@ public class Room {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "room_id")
-    private Long groupId;
+    private Long roomId;
 
     @Column(length = 20)
     @NotNull
@@ -43,8 +43,8 @@ public class Room {
     private List<User> users = new ArrayList<User>() ;
 
 
-    public Long getGroupId() {
-        return groupId;
+    public Long getRoomId() {
+        return roomId;
     }
     public String getName() {
         return name;

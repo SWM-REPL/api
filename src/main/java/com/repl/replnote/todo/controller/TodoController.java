@@ -30,8 +30,8 @@ public class TodoController {
 
     @PostMapping(value = "/todo")
     @Operation(summary = "todo 생성 메서드", description = "todo 생성 메서드입니다.")
-    public ResponseEntity<Message> createTodo(@RequestBody Todo todo) {
-        TodoId savedTodoId = todoService.createTodo(todo);
+    public ResponseEntity<Message> create(@RequestBody Todo todo) {
+        TodoId savedTodoId = todoService.create(todo);
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
 
@@ -46,8 +46,8 @@ public class TodoController {
 
     @PutMapping(value = "/todo")
     @Operation(summary = "todo 수정 메서드", description = "todo 수정 메서드입니다.")
-    public ResponseEntity<Message> updateTodo(@RequestBody Todo todo) {
-        TodoId savedTodoId = todoService.updateTodo(todo);
+    public ResponseEntity<Message> update(@RequestBody Todo todo) {
+        TodoId savedTodoId = todoService.update(todo);
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
 
@@ -61,18 +61,25 @@ public class TodoController {
     }
 
     @GetMapping(value = "/todo/{roomId}/{todoId}")
-    public Todo getTodoOne(@PathVariable("roomId") Long roomId, @PathVariable("todoId") String todoId) {
-
-        return todoService.getTodoOne(roomId,todoId);
+    @Operation(summary = "개별 todo 조회 메서드", description = "roomId와 todoId를 입력받아 특정 todo를 조회하는 메서드입니다.")
+    public Todo readOne(@PathVariable("roomId") Long roomId, @PathVariable("todoId") String todoId) {
+        return todoService.readOne(roomId,todoId);
     }
 
-    @GetMapping(value = "/todo")
-    public List<Todo> getTodoAll() {
-        return todoService.getTodoAll();
+
+    @GetMapping(value = "/todo/{roomId}")
+    @Operation(summary = "그룹 별 todo 조회 메서드", description = "roomId를 입력받아 그룹 별 todo를 조회하는 메서드입니다.")
+    public List<Todo> readAll(@PathVariable("roomId") Long roomId) {
+        return todoService.readAll(roomId);
     }
 
     @DeleteMapping(value = "/todo")
-    public void deleteTodo(@RequestBody TodoId todoId) {
-        todoService.deleteTodo(todoId.getRoomId(),todoId.getTodoId());
+    @Operation(summary = "todo 삭제 메서드", description = "todo 삭제 메서드입니다.")
+    public ResponseEntity<Message> delete(@RequestBody TodoId todoId) {
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
+        todoService.delete(todoId.getRoomId(),todoId.getTodoId());
+        Message message = new Message(StatusEnum.OK, "할 일 삭제 성공!",todoId);
+        return new ResponseEntity<>(message, headers, HttpStatus.OK);
     }
 }

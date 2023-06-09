@@ -32,8 +32,8 @@ public class RoomController {
 
     @PostMapping(value = "/room", produces = "application/json;charset=UTF-8")
     @Operation(summary = "그룹 생성 메서드", description = "그룹 생성 메서드입니다.")
-    public ResponseEntity<Message> createRoom(@RequestBody Room room) {
-        Long savedRoomId = roomService.createRoom(room);
+    public ResponseEntity<Message> create(@RequestBody Room room) {
+        Long savedRoomId = roomService.create(room);
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
 
@@ -47,9 +47,9 @@ public class RoomController {
     }
 
     @PutMapping(value = "/room")
-    @Operation(summary = "그룹 수정 메서드", description = "그룹 수정 메서드입니다.")
-    public ResponseEntity<Message> updateRoom(@RequestBody Room room) {
-        Long savedRoomId = roomService.updateRoom(room);
+    @Operation(summary = "그룹 수정 메서드", description = "특정 그룹의 정보를 수정 메서드입니다.")
+    public ResponseEntity<Message> update(@RequestBody Room room) {
+        Long savedRoomId = roomService.update(room);
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
 
@@ -62,20 +62,27 @@ public class RoomController {
         }
     }
 
-    @GetMapping(value = "/room/{groupId}")
-    public Room getRoomOne(@PathVariable("groupId") Long groupId) {
-        return roomService.getRoomOne(groupId);
+    @GetMapping(value = "/room/{roomId}")
+    @Operation(summary = "개별 그룹 조회 메서드", description = "roomId를 입력받아 특정 그룹을 조회 메서드입니다.")
+    public Room readOne(@PathVariable("roomId") Long roomId) {
+        return roomService.readOne(roomId);
     }
 
     @GetMapping(value = "/room")
-    public List<Room> getRoomAll() {
-        return roomService.getRoomAll();
+    @Operation(summary = "전체 그룹 조회 메서드", description = "생성된 전체 그룹을 조회하는 메서드입니다.")
+    public List<Room> readAll() {
+        return roomService.readAll();
     }
 
     @DeleteMapping(value = "/room")
-    public void deleteRoom(@RequestParam Long groupId) {
-        todoService.deleteByGroupId(groupId);
-        roomService.deleteRoom(groupId);
+    @Operation(summary = "그룹 삭제 메서드", description = "roomId를 입력받아 특정 그룹을 삭제하는 메서드입니다.")
+    public ResponseEntity<Message> delete(@RequestParam Long roomId) {
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
+        todoService.deleteByRoomId(roomId);
+        roomService.delete(roomId);
+        Message message = new Message(StatusEnum.OK, "그룹 삭제 성공!",roomId);
+        return new ResponseEntity<>(message, headers, HttpStatus.OK);
     }
 
 }

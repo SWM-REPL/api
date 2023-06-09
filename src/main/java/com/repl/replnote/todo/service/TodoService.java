@@ -21,7 +21,7 @@ public class TodoService {
 
     }
 
-    public TodoId createTodo(Todo todo){
+    public TodoId create(Todo todo){
         Optional<Todo> exist = todoRepository.findById(todo.getTodoId());
         if (exist.isPresent()) {
             throw new IllegalStateException("존재하는 todo 입니다.");
@@ -30,14 +30,14 @@ public class TodoService {
         return todo.getTodoId();
     }
 
-    public void deleteByGroupId(Long roomId) {
+    public void deleteByRoomId(Long roomId) {
         List<Todo> exist =todoRepository.findAll().stream().filter(todo -> todo.getTodoId().getRoomId().equals(roomId)).toList();
-
         for (Todo todo : exist) {
             todoRepository.delete(todo);
         }
     }
-    public TodoId updateTodo(Todo todo){
+
+    public TodoId update(Todo todo){
         Optional<Todo> exist = todoRepository.findById(todo.getTodoId());
         if (!exist.isPresent()) {
             throw new IllegalStateException("존재하지 않는 그룹 입니다.");
@@ -45,20 +45,23 @@ public class TodoService {
         todoRepository.save(todo);
         return todo.getTodoId();
     }
-    public Todo getTodoOne(Long roomId, String todoId) {
 
+    public Todo readOne(Long roomId, String todoId) {
         return todoRepository.findAll().stream()
                 .filter(todo -> todo.getTodoId().getRoomId().equals(roomId)&&todo.getTodoId().getTodoId().equals(todoId))
-                .findFirst().orElseThrow(()-> new IllegalStateException("없는 할일,그룹ID 입니다."));
+                .findFirst().orElseThrow(()-> new IllegalStateException("존재하지 않는 할 일입니다."));
     }
-    public List<Todo> getTodoAll() {
-        List<Todo> todos = todoRepository.findAll();
+
+    public List<Todo> readAll(Long roomId) {
+        List<Todo> todos=todoRepository.findAll().stream()
+                .filter(todo -> todo.getTodoId().getRoomId().equals(roomId))
+                .toList();
         return todos;
     }
-    public void deleteTodo(Long roomId, String todoId) {
-        Todo todo = getTodoOne(roomId,todoId);
-        todoRepository.delete(todo);
 
+    public void delete(Long roomId, String todoId) {
+        Todo todo = readOne(roomId,todoId);
+        todoRepository.delete(todo);
     }
 
 }
