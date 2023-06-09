@@ -42,7 +42,6 @@ public class RoomService {
     }
 
     public Long updateRoom(Room room){
-
         Optional<Room> exist = roomRepository.findById(room.getGroupId());
         if (!exist.isPresent()) {
             throw new IllegalStateException("존재하지 않는 그룹 입니다.");

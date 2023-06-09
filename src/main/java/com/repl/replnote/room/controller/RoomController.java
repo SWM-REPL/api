@@ -2,6 +2,7 @@ package com.repl.replnote.room.controller;
 
 import com.repl.replnote.room.entity.Room;
 import com.repl.replnote.room.service.RoomService;
+import com.repl.replnote.todo.service.TodoService;
 import com.repl.replnote.user.dao.LoginDAO;
 import com.repl.replnote.util.Message;
 import com.repl.replnote.util.StatusEnum;
@@ -21,12 +22,15 @@ import java.util.List;
 @Tag(name = "Room", description = "Room 관련 api 입니다.")
 public class RoomController {
     private final RoomService roomService;
+    private final TodoService todoService;
 
     @Autowired
-    public RoomController(RoomService roomService) {
+    public RoomController(RoomService roomService, TodoService todoService) {
         this.roomService = roomService;
+        this.todoService = todoService;
     }
-    @PostMapping(value = "/create-room")
+
+    @PostMapping(value = "/room", produces = "application/json;charset=UTF-8")
     @Operation(summary = "그룹 생성 메서드", description = "그룹 생성 메서드입니다.")
     public ResponseEntity<Message> createRoom(@RequestBody Room room) {
         Long savedRoomId = roomService.createRoom(room);
@@ -41,10 +45,11 @@ public class RoomController {
             return new ResponseEntity<>(message, headers, HttpStatus.CREATED);
         }
     }
-    @PutMapping(value = "/update-room")
+
+    @PutMapping(value = "/room")
     @Operation(summary = "그룹 수정 메서드", description = "그룹 수정 메서드입니다.")
     public ResponseEntity<Message> updateRoom(@RequestBody Room room) {
-        Long savedRoomId=roomService.updateRoom(room);
+        Long savedRoomId = roomService.updateRoom(room);
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
 
@@ -56,18 +61,20 @@ public class RoomController {
             return new ResponseEntity<>(message, headers, HttpStatus.CREATED);
         }
     }
-    @GetMapping(value = "/{groupId}")
-    public Room getRoomOne(@PathVariable("groupId") Long groupId){
+
+    @GetMapping(value = "/room/{groupId}")
+    public Room getRoomOne(@PathVariable("groupId") Long groupId) {
         return roomService.getRoomOne(groupId);
     }
 
-    @GetMapping(value = "/group-list")
-    public List<Room> getRoomAll(){
+    @GetMapping(value = "/room")
+    public List<Room> getRoomAll() {
         return roomService.getRoomAll();
     }
 
-    @RequestMapping(value = "/{groupId}", method = RequestMethod.DELETE)
-    public void deleteRoom(@PathVariable("groupId") Long groupId) {
+    @DeleteMapping(value = "/room")
+    public void deleteRoom(@RequestParam Long groupId) {
+        todoService.deleteByGroupId(groupId);
         roomService.deleteRoom(groupId);
     }
 
