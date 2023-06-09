@@ -2,6 +2,7 @@ package com.repl.replnote.room.controller;
 
 import com.repl.replnote.room.entity.Room;
 import com.repl.replnote.room.service.RoomService;
+import com.repl.replnote.todo.service.TodoService;
 import com.repl.replnote.user.dao.LoginDAO;
 import com.repl.replnote.util.Message;
 import com.repl.replnote.util.StatusEnum;
@@ -21,15 +22,18 @@ import java.util.List;
 @Tag(name = "Room", description = "Room 관련 api 입니다.")
 public class RoomController {
     private final RoomService roomService;
+    private final TodoService todoService;
 
     @Autowired
-    public RoomController(RoomService roomService) {
+    public RoomController(RoomService roomService, TodoService todoService) {
         this.roomService = roomService;
+        this.todoService = todoService;
     }
-    @PostMapping(value = "/create-room")
+
+    @PostMapping(value = "/room", produces = "application/json;charset=UTF-8")
     @Operation(summary = "그룹 생성 메서드", description = "그룹 생성 메서드입니다.")
-    public ResponseEntity<Message> createRoom(@RequestBody Room room) {
-        Long savedRoomId = roomService.createRoom(room);
+    public ResponseEntity<Message> create(@RequestBody Room room) {
+        Long savedRoomId = roomService.create(room);
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
 
@@ -41,10 +45,11 @@ public class RoomController {
             return new ResponseEntity<>(message, headers, HttpStatus.CREATED);
         }
     }
-    @PutMapping(value = "/update-room")
-    @Operation(summary = "그룹 수정 메서드", description = "그룹 수정 메서드입니다.")
-    public ResponseEntity<Message> updateRoom(@RequestBody Room room) {
-        Long savedRoomId=roomService.updateRoom(room);
+
+    @PutMapping(value = "/room")
+    @Operation(summary = "그룹 수정 메서드", description = "특정 그룹의 정보를 수정 메서드입니다.")
+    public ResponseEntity<Message> update(@RequestBody Room room) {
+        Long savedRoomId = roomService.update(room);
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
 
@@ -56,19 +61,28 @@ public class RoomController {
             return new ResponseEntity<>(message, headers, HttpStatus.CREATED);
         }
     }
-    @GetMapping(value = "/{groupId}")
-    public Room getRoomOne(@PathVariable("groupId") Long groupId){
-        return roomService.getRoomOne(groupId);
+
+    @GetMapping(value = "/room/{roomId}")
+    @Operation(summary = "개별 그룹 조회 메서드", description = "roomId를 입력받아 특정 그룹을 조회 메서드입니다.")
+    public Room readOne(@PathVariable("roomId") Long roomId) {
+        return roomService.readOne(roomId);
     }
 
-    @GetMapping(value = "/group-list")
-    public List<Room> getRoomAll(){
-        return roomService.getRoomAll();
+    @GetMapping(value = "/room")
+    @Operation(summary = "전체 그룹 조회 메서드", description = "생성된 전체 그룹을 조회하는 메서드입니다.")
+    public List<Room> readAll() {
+        return roomService.readAll();
     }
 
-    @RequestMapping(value = "/{groupId}", method = RequestMethod.DELETE)
-    public void deleteRoom(@PathVariable("groupId") Long groupId) {
-        roomService.deleteRoom(groupId);
+    @DeleteMapping(value = "/room")
+    @Operation(summary = "그룹 삭제 메서드", description = "roomId를 입력받아 특정 그룹을 삭제하는 메서드입니다.")
+    public ResponseEntity<Message> delete(@RequestParam Long roomId) {
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
+        todoService.deleteByRoomId(roomId);
+        roomService.delete(roomId);
+        Message message = new Message(StatusEnum.OK, "그룹 삭제 성공!",roomId);
+        return new ResponseEntity<>(message, headers, HttpStatus.OK);
     }
 
 }

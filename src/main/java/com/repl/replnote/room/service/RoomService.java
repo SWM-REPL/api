@@ -22,44 +22,37 @@ public class RoomService {
         this.roomRepository = roomRepository;
     }
 
-    public Long createRoom(Room room) {
-
-        Optional<Room> exist = roomRepository.findById(room.getGroupId());
+    public Long create(Room room) {
+        Optional<Room> exist = roomRepository.findById(room.getRoomId());
         if (exist.isPresent()) {
             throw new IllegalStateException("존재하는 ID 입니다.");
         }
         roomRepository.save(room);
-        return room.getGroupId();
+        return room.getRoomId();
     }
 
-    public Room getRoomOne(Long groupId) {
-        return roomRepository.findById(groupId)
+    public Room readOne(Long roomId) {
+        return roomRepository.findById(roomId)
                 .orElseThrow(() -> new IllegalStateException("없는 그룹ID 입니다."));
     }
-    public List<Room> getRoomAll() {
+
+    public List<Room> readAll() {
         List<Room> rooms = roomRepository.findAll();
         return rooms;
     }
 
-    public Long updateRoom(Room room){
-
-        Optional<Room> exist = roomRepository.findById(room.getGroupId());
+    public Long update(Room room){
+        Optional<Room> exist = roomRepository.findById(room.getRoomId());
         if (!exist.isPresent()) {
             throw new IllegalStateException("존재하지 않는 그룹 입니다.");
         }
         roomRepository.save(room);
-        return room.getGroupId();
+        return room.getRoomId();
     }
 
-    public void deleteRoom(Long groupId) {
-        Room room = getRoomOne(groupId);
+    public void delete(Long roomId) {
+        Room room = readOne(roomId);
         roomRepository.delete(room);
     }
-    public boolean validateDuplicateUser(Room room) {
-        if (roomRepository.findById(room.getGroupId()).isPresent()) {
-            return false;
-        } else {
-            return true;
-        }
-    }
+
 }
