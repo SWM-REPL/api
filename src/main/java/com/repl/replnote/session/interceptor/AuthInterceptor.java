@@ -23,47 +23,7 @@ public class AuthInterceptor implements HandlerInterceptor {
         if (request.getSession().getAttribute("userId") == null) {
             throw new InterceptorException(InterceptorExceptionEnum.UNAUTHORIZED);
         }
-        return true;
-//        return HandlerInterceptor.super.preHandle(request, response, handler);
-    }
-
-    @Override
-    public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView modelAndView) throws Exception {
-        HandlerInterceptor.super.postHandle(request, response, handler, modelAndView);
-//        System.out.println("Start afterCompletion");
-//        Cookie[] cookies = request.getCookies();
-//        if (cookies != null) {
-//            System.out.println("Exist Cookie");
-//            for (Cookie cookie : cookies) {
-//                System.out.println(cookie.getName());
-////                if (cookie.getName().equals("JSESSIONID")) {
-////                    String userId = response.toString();
-////                    System.out.println(userId);
-//////                    sessionService.saveSession(cookie.getValue(), userId);
-////                    break;
-////                }
-//            }
-//        }
-//        System.out.println("End afterCompletion");
-    }
-
-    @Override
-    public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) throws Exception {
-        HandlerInterceptor.super.afterCompletion(request, response, handler, ex);
-//        System.out.println("Start afterCompletion");
-//        Cookie[] cookies = request.getCookies();
-//        if (cookies != null) {
-//            System.out.println("Exist Cookie");
-//            for (Cookie cookie : cookies) {
-//                System.out.println(cookie.getName());
-////                if (cookie.getName().equals("JSESSIONID")) {
-////                    String userId = response.toString();
-////                    System.out.println(userId);
-//////                    sessionService.saveSession(cookie.getValue(), userId);
-////                    break;
-////                }
-//            }
-//        }
-//        System.out.println("End afterCompletion");
+//        return true;
+        return HandlerInterceptor.super.preHandle(request, response, handler);
     }
 }

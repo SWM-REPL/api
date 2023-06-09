@@ -44,7 +44,7 @@ public class AuthController {
         headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
 
         if (authService.login(loginDAO)) {
-            Message message = new Message(StatusEnum.OK, "로그인 성공!", new LoginDTO(loginDAO.getUserId()));
+            Message message = new Message(StatusEnum.OK, "로그인 성공!", userService.read(loginDAO.getUserId()));
             HttpSession session = request.getSession();
             session.setAttribute("userId", loginDAO.getUserId());
             return new ResponseEntity<>(message, headers, HttpStatus.OK);
