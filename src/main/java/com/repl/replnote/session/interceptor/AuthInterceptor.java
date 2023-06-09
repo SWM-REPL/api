@@ -15,8 +15,8 @@ import org.springframework.web.servlet.ModelAndView;
 
 @Component
 public class AuthInterceptor implements HandlerInterceptor {
-    @Autowired
-    SessionService sessionService;
+//    @Autowired
+//    SessionService sessionService;
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
